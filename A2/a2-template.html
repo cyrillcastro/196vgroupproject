@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html xml:lang="en" lang="en">
+<head>
+  <title>CSC 196V  Assignment 2</title>
+  <style>
+* { padding: 0; margin: 0; }
+
+body {
+  margin: 0 auto 0 auto;
+  padding: 0;
+  background-color: #33333f;
+  width: 840px;
+  font-family: "Avenir", "Avenir Next", Helvetica Neue, Arial;
+  font-size: 0.95em;
+}
+
+a, a:visited { text-decoration: none; color: #7533f4; }
+a:hover { text-decoration: underline; color: #f4b014; }
+img, a.img, a:hover.img { border: none; }
+
+img {
+  max-width: 800px;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #492a7c;
+  background-color: inherit;
+  font-weight: normal;
+  padding: 0 0 5px 0;
+  margin: 15px 0 0 0;
+  border: none;
+  clear: right;
+}
+h1 { font-size: 18pt; margin:  5px 0 10px 0; line-height: 28px; }
+h2 { font-size: 14pt; margin: 30px 0 15px 0; letter-spacing: 0.01em; border-bottom: 1px solid #ccc;  line-height: 20px;}
+h3 { font-size: 13pt; }
+h4 { font-size: 12pt; }
+h5 { font-size: 11pt; }
+p { margin: 0 0 10px 0; }
+hr { border: 0px; border-top: 1px solid #ccc; height: 0px; }
+ol { margin: 1em; }
+
+.content {
+  margin: 0;
+  padding: 15px 20px;
+  background-color: #ffffff;
+}
+
+.article {
+  line-height: 1.5em;
+}
+
+.entry  {
+  border-top: 1px solid #ddd;
+  padding-top: 2px;
+  margin-top: 3em;
+}
+  </style>
+</head>
+
+<body>
+<div class='content'>
+
+<section>
+  <h1>Assignment 2: Exploratory Data Analysis</h1>
+
+  <p>
+    <strong>Eva Najera</strong>
+  </p>
+</section>
+
+<section>
+  <h2>Dataset</h2>
+
+  <p>
+    "Top 1000 Songs To Hear Before You Die"<br/>
+    This data set is a list of songs picked by a long running British daily newspaper, The Guardian.  
+	The dimensions include song theme, song title, song artist, song year, and a spotify_url. I am interested
+	in music and about the history of it as a whole.  The arts, especially music, are a reflection of the times
+	and I wanted to explore that. 
+  </p>
+
+  <p>
+    The data is available online at:
+    <strong>
+      <a href="https://opendata.socrata.com/Fun/Top-1-000-Songs-To-Hear-Before-You-Die/ed74-c6ni/data">Top 1000 Songs To Hear Before You Die</a>
+    </strong>
+  </p>
+</section>
+
+<section>
+  <h2>Initial Analysis Questions</h2>
+  <ol>
+    <li>What song themes were most prevalent for each decade?</li>
+    <li>Which decade and year had the most top songs that made the list?</li>
+    <li>Who were the top artists based on total number of songs?</li>
+    <li>Are most of the songs listed fairly old?</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Discoveries &amp; Insights</h2>
+
+  <div class="entry">
+    <img src="TopSongThemesByDecade.png" />
+    <p class="caption">
+    Love songs were the top theme of the 1960s and Party songs were the top theme of 1970s and 1980s thanks in part to disco and funk music.  In the 1990s, partying songs
+	fell in favor of life and death probably due to the era of grunge and the emergence of hardcore rap genres breaking into the mainstream. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="ThemesOverDecadesAlt.png" />
+    <p class="caption">
+    A more detailed look at every song theme over each decade. 
+	The 1960s saw a huge increase in number of songs  in total and about nearly every theme. 
+	The 1970s and 1980s had most party songs but dropped of significantly in the 1990s. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="Top10ArtistsBar.png" />
+    <p class="caption">
+    Bob Dylan and The Beatles were the artists that had considerably more top songs than the rest.  
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="TopYear1968Themes.png" />
+    <p class="caption">
+    The year 1968 had a balanced spread of songs themes.  It was a year where no one theme dominated another.  
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="SongsOverDecade.png" />
+    <p class="caption">
+    The 1970s were the decade where most of the top songs came from with 1960s not being far behind. 
+	Surprisingly, the 2000s scored more than the 1990s.  Usually, the older songs fare better on lists like these.
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="AvgAgeOfSongByTheme.png" />
+    <p class="caption">
+    At the time this list was made it
+		was 2008.  I calculated age based on the current year 2019 and used an average based on all the song ages within that theme.  It was not surprising
+		to see that songs about Love, People And Places, and Life & Death were older while the themes of Sex, Partying, and Politics and Protest
+		were the "younger" songs.
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="Top5ArtistsByDecade.png" />
+    <p class="caption">
+    This basically shows of the top 5 artists with most records listed, how many records did they produce each decade. 
+	The Beatles made all their contributions in the 1960s while Bob Dylan had listed songs over a 4 decade span and David Bowie spanned 
+	over 5 decades.	
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="OneHitArtistsByTheme.png" />
+    <p class="caption">
+    The party theme had subtantially more artists with a single contribution.  It is more easier to judge a good party song than it
+	is to judge a good song based on a more mature theme.  Party songs are able to transcend generations more easily.   
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="OneHitArtistsVsAllByTheme.png" />
+    <p class="caption">
+    Looking further into one-hit artist contributions, we see the percentage of party song artists who had just one song listed was considerably 
+	more than artists who had more than one song listed.
+    Songs about partying are more easier and fun to create so there may be more quality songs to choose from.  
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="LifeAndDeath1990s.png" />
+    <p class="caption">
+    The 1990s is one of my favorite decades for music and most of these song titles I know but a lot I don't remember.
+	It is interesting to see just how some of these songs remain timeless. I also like that this list does not include too
+	many big commercial hits.   
+    </p>
+  </div>
+
+  <div class="entry">
+    <h3>Summary</h3>
+    <p>
+   Lists like these always tend to favor older songs in general because it is much easier to tell which songs 
+	still stand the test of time.  Most of the songs from this list came from 1960s, 1970s, and 1980s.  I think that 
+	it is difficult to pick a newer song based on a more mature theme because it is hard to
+	predict what song will resonate with people especially for a list such as "Songs to Hear Before You Die".  
+	This list was interesting to look at although music is such a subjective topic but fun to analyze and think about. 
+    </p>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
