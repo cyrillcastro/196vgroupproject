@@ -10,11 +10,13 @@ body {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+/*
 .bar {
   fill: orange;
 }
+*/
 .bar:hover {
-  fill: orangered ;
+  fill: yellow ;
 }
 .x.axis path {
   display: none;
@@ -124,5 +126,21 @@ d3.csv("topThemePerDecade.csv", function(error, data) {
       .attr("height", function(d) { return height - y(d.numberOfRecords); })
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
+	  .attr("fill", function(d){
+		if (d.theme =="Love"){
+			return "purple";
+		}else if (d.theme == "Party songs"){
+			return "aqua";
+		}
+		else if (d.theme=="People and Places" || d.theme =="People and places"){
+			return "green";
+		}
+		else if (d.theme == "Life and death" ){
+			return "orangered";
+		}
+		else if (d.theme == "Sex"){
+			return "red";
+		}
+		})
 });
 </script>
