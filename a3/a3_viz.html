@@ -4,6 +4,7 @@
 <style>
 body {
   font: 10px 'Quicksand', sans-serif;
+  text-transform: capitalize;
 }
 .axis path,
 .axis line {
@@ -11,9 +12,19 @@ body {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+h2 {
+margin: 30px;
+}
+
+p {
+margin: 30px;
+text-transform: none;
+font: 14px sans-serif;
+}
 /*
 .bar {
-  fill: rgb(240, 169, 218);
+  fill: orange;
 }
 */
 .bar:hover {
@@ -27,6 +38,7 @@ body {
   font-weight: bold;
   padding: 12px;
   background: rgba(0, 0, 0, 0.8);
+  /*background-image: url("images.png");*/
   color: #fff;
   border-radius: 2px;
 }
@@ -50,11 +62,17 @@ body {
 }
 </style>
 <body>
+<div id="option">
+    <input name="updateButton" 
+           type="radio" 
+           value="Total Records By Song Theme" 
+           onclick="updateData()">Theme Comparison</br>
+</div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script>
-var margin = {top: 80, right: 20, bottom: 50, left: 70},
-    width = 960 - margin.left - margin.right,
+var margin = {top: 80, right: 20, bottom: 80, left: 70},
+    width = 1000 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 var formatPercent = d3.format(".0%");
 var x = d3.scale.ordinal()
@@ -85,6 +103,7 @@ d3.csv("topThemePerDecade.csv", function(error, data) {
 		d.numberOfRecords = +d.numberOfRecords;
 		d.decade = +d.decade;
 	})
+	console.log(data[0]);
   x.domain(data.map(function(d) { return d.decade; }));
   y.domain([0, d3.max(data, function(d) { return d.numberOfRecords; })]);
   svg.append("g")
@@ -94,9 +113,11 @@ d3.csv("topThemePerDecade.csv", function(error, data) {
       .call(xAxis)
     .append("text")
       .attr("y", 7)
-      .attr("font-size","15px")
+	  .attr("class", "xLabel")
+      .attr("font-size","24px")
+	  .attr("font-weight", "bold")
       .attr("dy", "2em")
-      .attr("x", ((width +margin.left )/ 2))
+      .attr("x", ((width + margin.left )/ 2))
       .style("text-anchor", "end")
       .text("Decade");
   svg.append("g")
@@ -104,12 +125,13 @@ d3.csv("topThemePerDecade.csv", function(error, data) {
       .call(yAxis)
     .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("font-size","15px")
-      .attr("y", 7)
+      .attr("font-size","22px")
+      .attr("y", -60)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Number of Records");
   svg.append("text")
+	.attr("class", "title")
       .attr("x", (width / 2))             
       .attr("y", 0 - (margin.top / 2))
       .attr("text-anchor", "middle")  
@@ -127,7 +149,7 @@ d3.csv("topThemePerDecade.csv", function(error, data) {
       .attr("height", function(d) { return height - y(d.numberOfRecords); })
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-	  .attr("fill", function(d){
+		.attr("fill", function(d){
 		if (d.theme =="Love"){
 			return "orangered";
 		}else if (d.theme == "Party songs"){
@@ -144,4 +166,128 @@ d3.csv("topThemePerDecade.csv", function(error, data) {
 		}
 		})
 });
+
+function updateData() {
+    // Get the data again
+    d3.csv("totalRecordsPerSongTheme.csv", function(error, data) {
+       	data.forEach(function(d) {
+			d.theme = d.theme;
+			d.numberOfRecords = +d.numberOfRecords;	
+	    })
+		console.log(data[0]);
+			
+	x.domain(data.map(function(d) { return d.theme; }));
+	y.domain([0, d3.max(data, function(d) { return +d.numberOfRecords; })]);
+	
+	var yAxisScale = d3.scale.linear()
+		.domain([0, d3.max(data, function(d) { return +d.numberOfRecords; })])
+		.range([height, 0]);
+	
+	yAxis.scale(yAxisScale);
+	
+	d3.select(".y.axis").transition().duration(1000).call(yAxis);
+	
+	var barWidth = 60;
+	var textWidth = barWidth/2; 
+	
+	 // Select the section we want to apply our changes to
+	var bars = d3.select("svg").selectAll("rect").data(data);
+	var tick = d3.select("g").select(".x.axis").selectAll("g").select("text").data(data);
+	var line = d3.select("g").select(".x.axis").selectAll("g").select("line").data(data);
+	var title = d3.select("body").select("svg").select(".title").data(data);
+	var xLabel = d3.select(".xLabel").data(data);
+	
+	var ticks = d3.selectAll(".tick").selectAll("line").data(data);
+	ticks.remove();
+
+	bars.exit().remove();
+	title.exit().remove();
+	line.remove();
+	tick.exit().remove(); 
+	
+	xLabel
+		.attr("class", "xLabel")
+		.text("Theme");
+	
+	title
+		.attr("class", "title")
+		.text("Total Records Per Song Theme");
+	
+	tick
+	  .text(function(d) { return d.theme; })
+	  .attr("x", function(d, i){
+		console.log(i * textWidth);
+		return i * textWidth;
+	})
+
+	.transition().duration(800);
+		
+	tick.enter()
+	.append("g")
+	.attr("x", function(d, i){
+		console.log(i * textWidth);
+		return i * textWidth;
+	})
+	
+		
+	//If it's an existing selection just change these attributes - UPDATE - Do the things here you want to do	
+	bars
+	 .attr("x", function(d) { return x(d.theme); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.numberOfRecords); })
+	  .attr("height", function(d) { return height - y(d.numberOfRecords); })
+	  .attr("fill", function(d){
+		if (d.theme =="love"){
+			return "purple";
+		}else if (d.theme == "party songs"){
+			return "royalblue";
+		}
+		else if (d.theme=="people and places"){
+			return "blueviolet";
+		}
+		else if (d.theme == "life and death" ){
+			return "gold";
+		}
+		else if (d.theme == "sex"){
+			return "crimson";
+		}
+		else if (d.theme == "politics and protest")
+			return "teal";
+		else if (d.theme == "heartbreak")
+			return "black";
+		});
+		
+    //If the element is a new selection then append a rectangle - ENTER - Do the things you only want to do 
+	 bars.enter()
+	 .append("rect")
+	 .attr("class", "bar")
+	 .attr("x", function(d) { return x(d.decade); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.numberOfRecords); })
+      .attr("height", function(d) { return height - y(d.numberOfRecords); })
+	 })	
+	 	 	 
+};
+
 </script>
+<h2>Assignment 3 - Interactive Design</h2>
+<p>Group members: Christine Tu, Cyrill Castro, Eva Najera, Lovely Joyce Dungca</br>
+CSC 196V-01</br>
+Professor A. Baynes</br>
+31 March 2019</br>
+</p>
+<p>We chose our visual encodings and interaction techniques by exploring D3.js, a JavaScript library website. We wanted to incorporate our dataset by working with an HTML template that was provided from a sample on D3.js. 
+We initially searched for some type of bar chart to use as our visualization tool because it demonstrated our data in the most concise way. 
+Some of the alternatives that we considered included an annotated bar graph, a bar graph with a pie chart (it moved as you clicked on a bar at a point, the pie chart adjusted) as well as a zoomable treemap, and a zoomable circle packing map. 
+When we were deciding which design to implement with our dataset, we narrowed down our options to either: </p>
+<p>1) the annotated bar graph or </p>
+<p>2) the bar graph with a movable pie chart. </p>
+<p>When we made our ultimate decision, we decided to implement the annotated bar graph, because we knew that there would be another group assignment that allowed us to work with other dynamic visualizations. 
+We decided to utilize this assignment as a way to familiarize ourselves with D3.js first, and we planned on deepening our implementation skills with more complicated visualizations - such as the bar graph and movable pie chart visualization - for future assignments. </p>
+<p>For this group project, the work was split evenly among all group members. We utilized class time to collaborate and GitHub to share our work. 
+The development processes consisted of modifying the existing template from D3.js and pushing any changes to the GitHub. 
+We also decided to compress the dataset so the visualization would be as clear and concise as possible when a user interacts with it. 
+For this application, the development took roughly 16 and a half hours to complete, which included researching and learning about how to implement D3.js. 
+We also spent a lot of time trying to research additional interaction tools and techniques. 
+Majority of the time was comprised of figuring out how to update the bar chart with different data when selecting another view and incorporating our dataset along with it.</p>
+</body>
