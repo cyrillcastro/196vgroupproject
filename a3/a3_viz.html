@@ -2,7 +2,6 @@
 <meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 <style>
-
 body {
   font: 10px 'Quicksand', sans-serif;
 }
@@ -12,11 +11,13 @@ body {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+/*
 .bar {
   fill: rgb(240, 169, 218);
 }
+*/
 .bar:hover {
-  fill: rgb(228, 100, 235) ;
+  fill: rgb(94, 93, 93) ;
 }
 .x.axis path {
   display: none;
@@ -126,5 +127,21 @@ d3.csv("topThemePerDecade.csv", function(error, data) {
       .attr("height", function(d) { return height - y(d.numberOfRecords); })
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
+	  .attr("fill", function(d){
+		if (d.theme =="Love"){
+			return "orangered";
+		}else if (d.theme == "Party songs"){
+			return "royalblue";
+		}
+		else if (d.theme=="People and Places" || d.theme =="People and places"){
+			return "blueviolet";
+		}
+		else if (d.theme == "Life and death" ){
+			return "gold";
+		}
+		else if (d.theme == "Sex"){
+			return "crimson";
+		}
+		})
 });
 </script>
