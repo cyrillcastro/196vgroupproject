@@ -60,13 +60,21 @@ font: 14px sans-serif;
   top: 100%;
   left: 0;
 }
+#option{
+  font-size: 15px;
+}
 </style>
 <body>
 <div id="option">
+    <input name="updateButton"
+          type="radio"
+          value="Top Song Themes By Decade"
+          checked="checked"
+          onclick="location.reload()" > Top Songs By Decade </br>
     <input name="updateButton" 
            type="radio" 
            value="Total Records By Song Theme" 
-           onclick="updateData()">Theme Comparison</br>
+           onclick="updateData()"> Theme Comparison</br>
 </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
@@ -268,8 +276,9 @@ function updateData() {
 	 })	
 	 	 	 
 };
-
 </script>
+
+
 <h2>Assignment 3 - Interactive Design</h2>
 <p>Group members: Christine Tu, Cyrill Castro, Eva Najera, Lovely Joyce Dungca</br>
 CSC 196V-01</br>
